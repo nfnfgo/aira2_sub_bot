@@ -1,15 +1,10 @@
 import asyncio
-from distutils import text_file
 import time
 
 from telebot.types import Message, InlineKeyboardMarkup, CallbackQuery, Chat
 from telebot.async_telebot import AsyncTeleBot
 
-import aiomysql
-
 from services.bot_command import send_to
-from services.user import UserStatus
-import config
 
 
 async def home(message: Message, bot: AsyncTeleBot,no_bot=False):

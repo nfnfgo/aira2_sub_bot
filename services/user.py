@@ -1,7 +1,6 @@
 import time
 import asyncio
 
-import aiomysql
 from telebot.types import User, Message, CallbackQuery, BotCommand
 
 
