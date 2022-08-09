@@ -1,0 +1,1 @@
+# https://aria2.github.io/manual/en/html/aria2c.html#terminology
