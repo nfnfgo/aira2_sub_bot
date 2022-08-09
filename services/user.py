@@ -4,7 +4,6 @@ import asyncio
 import aiomysql
 from telebot.types import User, Message, CallbackQuery, BotCommand
 
-from services.sql import SQLPool
 
 
 # 用户类
@@ -103,56 +102,3 @@ class UserStatus():
             del self.users_status_info[self.id]
         except Exception as e:
             print('service/user.py Failed to delete a whole user status_info', e)
-
-    async def is_bot_admin(self, admin_level: int = None) -> int | bool:
-        '''
-        (Asynchronous) A Fucntion to check the user's account status. 
-        (Such as Admin SuperAdmin ... )
-
-        Return a int nums without any other paras. It would be the 
-        status midium int number in the database
-
-        Paras:
-        admin_level=None: Should be int, return True if this user's 
-        level is higher than admin_level input
-        '''
-        # 开始读取数据库
-        asyncsql = SQLPool()
-        pool = await asyncsql.create()
-        async with pool.acquire() as conn:
-            conn:aiomysql.Connection=conn
-            async with conn.cursor() as cursor:
-                cursor:aiomysql.Cursor=cursor
-                await conn.commit()
-                await cursor.execute('''SELECT status FROM `users` WHERE `id`=%s''', (self.id,))
-                result = await cursor.fetchone()
-                if result is None:
-                    return False
-                else:
-                    if admin_level is None:
-                        return result[0]
-                    else:
-                        return result[0] >= admin_level
-        
-    # 用户身份过期时间查询
-    async def expired_time(self,return_bool=False) -> int|bool:
-        '''
-        检查用户身份的过期时间，理论上过期之后会恢复到普通身份
-
-        Paras:
-        return_bool: 返回是否过期的Bool值而非准确的int时间戳，True为过期，False为没有过期
-        '''
-        # 开始读取数据库
-        asyncsql = SQLPool()
-        pool = await asyncsql.create()
-        async with pool.acquire() as conn:
-            conn:aiomysql.Connection=conn
-            async with conn.cursor() as cursor:
-                cursor:aiomysql.Cursor=cursor
-                await conn.commit()
-                await cursor.execute('''SELECT expire_time FROM users WHERE id=%s''', (self.id,))
-                res = await cursor.fetchone()
-        res=res[0]
-        if return_bool == True:
-            return int(time.time())>res
-        return int(res)

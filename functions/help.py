@@ -34,7 +34,6 @@ async def help(message: Message, bot: AsyncTeleBot):
     if message.chat.type != 'private':
         await bot.reply_to(message, '请私聊机器人查看帮助信息')
     await send_to(message, bot, info_text, reply_markup=gen_help_home_markup(), disable_web_page_preview=True)
-    await log.log_user(message)
 
 
 # help信息按钮
@@ -59,50 +58,36 @@ def gen_guide_button(is_admin: bool = False):
     help_guide_func_info = {'button': 'help_guide_func'}
     help_guide_user_info = {'button': 'help_guide_user'}
     help_guide_other_info = {'button': 'help_guide_other'}
-    help_guide_admin_info = {'button': 'help_guide_admin'}
-    if is_admin == False:
-        return button.gen_markup([
-            ['基本指令', help_guide_bot_info],
-            ['功能设置', help_guide_func_info],
-            ['用户设置', help_guide_user_info],
-            ['其他指令', help_guide_other_info]])
-    if is_admin == True:
-        return button.gen_markup([
-            ['基本指令', help_guide_bot_info],
-            ['功能设置', help_guide_func_info],
-            ['用户设置', help_guide_user_info],
-            ['其他指令', help_guide_other_info],
-            ['管理指令', help_guide_admin_info]])
+    return button.gen_markup([
+        ['基本指令', help_guide_bot_info],
+        ['功能设置', help_guide_func_info],
+        ['用户设置', help_guide_user_info],
+        ['其他指令', help_guide_other_info]])
 
 
 # Callback 获取使用帮助
 async def help_get_use_guide(cbq: CallbackQuery, bot: AsyncTeleBot, data_dict: dict):
+    print('TEST')
     # 判断用户是否为管理员
     user_status = UserStatus(cbq)
-    is_admin = False
-    if await user_status.is_bot_admin(3) == True:
-        is_admin = True
     # 如果用户直接用命令呼出
     if isinstance(cbq, Message):
         message: Message = cbq
         # 判断对话类型
         if message.chat.type != 'private':
             await bot.reply_to(message, '请私聊机器人进行进一步操作')
-        await send_to(cbq, bot, guide_doc.home, reply_markup=gen_guide_button(is_admin=is_admin),disable_web_page_preview=True)
+        await send_to(cbq, bot, guide_doc.home, reply_markup=gen_guide_button(),disable_web_page_preview=True)
         return
     # 如果用户使用callback形式调用
     await bot.answer_callback_query(cbq.id, '')
     if data_dict['button'] == 'help_get_use_guide' or isinstance(cbq, Message):
-        await send_to(cbq, bot, guide_doc.home, reply_markup=gen_guide_button(is_admin=is_admin), disable_web_page_preview=True)
+        await send_to(cbq, bot, guide_doc.home, reply_markup=gen_guide_button(), disable_web_page_preview=True)
     # --- 通过 if 实现不同按钮内容切换
     if data_dict['button'] == 'help_guide_bot':
-        await bot.edit_message_text(guide_doc.home, cbq.from_user.id, cbq.message.message_id, reply_markup=gen_guide_button(is_admin=is_admin), disable_web_page_preview=True)
+        await bot.edit_message_text(guide_doc.home, cbq.from_user.id, cbq.message.message_id, reply_markup=gen_guide_button(), disable_web_page_preview=True)
     elif data_dict['button'] == 'help_guide_func':
-        await bot.edit_message_text(guide_doc.func, cbq.from_user.id, cbq.message.message_id, reply_markup=gen_guide_button(is_admin=is_admin))
+        await bot.edit_message_text(guide_doc.func, cbq.from_user.id, cbq.message.message_id, reply_markup=gen_guide_button())
     elif data_dict['button'] == 'help_guide_user':
-        await bot.edit_message_text(guide_doc.user, cbq.from_user.id, cbq.message.message_id, reply_markup=gen_guide_button(is_admin=is_admin))
+        await bot.edit_message_text(guide_doc.user, cbq.from_user.id, cbq.message.message_id, reply_markup=gen_guide_button())
     elif data_dict['button'] == 'help_guide_other':
-        await bot.edit_message_text(guide_doc.other, cbq.from_user.id, cbq.message.message_id, reply_markup=gen_guide_button(is_admin=is_admin))
-    elif data_dict['button'] == 'help_guide_admin':
-
-        await bot.edit_message_text(guide_doc.admin, cbq.from_user.id, cbq.message.message_id, reply_markup=gen_guide_button(is_admin=is_admin))
+        await bot.edit_message_text(guide_doc.other, cbq.from_user.id, cbq.message.message_id, reply_markup=gen_guide_button())
