@@ -4,6 +4,9 @@ This file is designed to start with main.py by using python subprocess module.
 Args:
 [1]: PATH, should be a string of current working path, used to import DIY package
 '''
+from cgi import test
+from importlib.resources import path
+import multiprocessing
 import os
 import time
 import asyncio
@@ -15,6 +18,7 @@ import aiomysql
 from telebot.async_telebot import AsyncTeleBot
 
 import config
+from config import bot
 
 
 # ---------------------------------------------------------------
@@ -22,9 +26,11 @@ import config
 def main(path: str):
     asyncio.run(async_main(path))
 
+def regular_push_home():
+    asyncio.run(regular_push())
 
-def regular_update_user_level_main():
-    asyncio.run(regular_update_user_level())
+def regular_update_user_level_main(test):
+    asyncio.run(regular_update_user_level(test))
 
 
 # ---------------------------------------------------------------
@@ -38,21 +44,25 @@ async def async_main(path: str):
     Aegv Received:''')
     print(path)
     print('----------------------------------------')
-    # 可以通过二次创建multiprocess来实现激活更多的定时器，同时经过验证，在这里激活的定时器貌似不需要进行环境设置
-    p = Process(target=regular_update_user_level_main)
-    p.start()
     sys.path.append(path)
-    # 开始创建bot实例
     bot = AsyncTeleBot(token=config.bot.token, parse_mode='HTML')
-    # 开始激活各个激活器
-    await regular_push(path, bot)
+    # 可以通过二次创建multiprocess来实现激活更多的定时器，同时经过验证，在这里激活的定时器貌似不需要进行环境设置
+    p = Process(target=regular_update_user_level_main, args=('this is a test thing',))
+    p.start()
+    p2 = multiprocessing.Process(target=regular_push_home)
+    p2.start()
 
 
 # push推送消息激活器
-async def regular_push(path: str, bot: AsyncTeleBot):
-    await asyncio.sleep(config.bot.regular_call_rate)
+async def regular_push():
+    while True:
+        print('main test')
+        await asyncio.sleep(1)
 
 
 # 定时读取数据库并且根据exptime刷新用户状态的激活器以及功能实现（做成一体化了）
-async def regular_update_user_level():
-    await asyncio.sleep(config.bot.update_user_level_rate)
+async def regular_update_user_level(test):
+    while True:
+        print('another test')
+        print(test)
+        await asyncio.sleep(2)
