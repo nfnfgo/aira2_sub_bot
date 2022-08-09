@@ -1,16 +1,10 @@
 import asyncio
 import base64
-from tkinter import E
 
 from telebot.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery, Message
 from telebot.async_telebot import AsyncTeleBot
 
 from functions import help
-from functions import push
-from functions import my
-from functions import log
-from functions import category
-from functions import use_cdk
 
 
 async def cbq_master(cbq: CallbackQuery, bot: AsyncTeleBot):

@@ -7,7 +7,6 @@ from telebot.async_telebot import AsyncTeleBot
 from services import button
 from services.bot_command import send_to
 from functions import guide_doc
-from functions import log
 from functions import deeplink
 import config
 from services.user import UserStatus
@@ -18,13 +17,11 @@ from services.user import UserStatus
 
 
 # 定义Introduction消息
-info_text = f'''<strong>频道信息聚合姬</strong>
-<strong>版本：</strong>1.1.0 <em>Beta</em>
-<strong>简介：</strong> 一个可以帮助你将不同公共频道的信息聚合在一起的好用Bot~
+info_text = f'''<strong>Aria工具小人</strong>
+<strong>版本：</strong>0.1.0 <em>Beta</em>
+<strong>简介：</strong> 一个可以帮助你订阅番剧，远程操作Aira2的拥有各种奇奇怪怪功能的好用Bot~
 <strong>通知/反馈频道：</strong> @{config.bot.channel_username}
-<a href="https://telegra.ph/%E9%A2%91%E9%81%93%E4%BF%A1%E6%81%AF%E8%81%9A%E5%90%88%E5%A7%AC-07-30"><b>机器人介绍/使用手册</b></a>
-
-内测免费一个月会员兑换码: <code>2KKMR3HAZGMMTA5498UAFE24C</code>'''
+'''
 
 
 # 发送help信息
