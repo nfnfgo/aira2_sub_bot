@@ -40,12 +40,7 @@ async def help(message: Message, bot: AsyncTeleBot):
 def gen_help_home_markup():
     # 定义各个按钮的信息
     help_get_use_guide_info = {'button': 'help_get_use_guide'}
-    help_become_vip_info = {'button': 'help_become_vip'}
-    help_contact_us_info = {'button': 'help_contact_us_info'}
-    return button.gen_markup([
-        ['获取使用帮助', help_get_use_guide_info],
-        ['成为会员', help_become_vip_info],
-        ['联系我们', help_contact_us_info]])
+    return button.gen_markup([['获取使用帮助', help_get_use_guide_info]])
 
 
 # -------------------------------------------------------------------
@@ -67,8 +62,6 @@ def gen_guide_button(is_admin: bool = False):
 
 # Callback 获取使用帮助
 async def help_get_use_guide(cbq: CallbackQuery, bot: AsyncTeleBot, data_dict: dict):
-    print('TEST')
-    # 判断用户是否为管理员
     user_status = UserStatus(cbq)
     # 如果用户直接用命令呼出
     if isinstance(cbq, Message):

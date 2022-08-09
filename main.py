@@ -1,7 +1,6 @@
 import asyncio
 import time
 import os
-import subprocess
 from multiprocessing import Process, Pipe, current_process
 
 from telebot.async_telebot import AsyncTeleBot

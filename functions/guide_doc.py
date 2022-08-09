@@ -3,8 +3,6 @@ home='''<strong>使用帮助</strong>
 启动Bot: /start
 关于Bot界面: /help
 
-推荐阅读 <a href="https://telegra.ph/%E9%A2%91%E9%81%93%E4%BF%A1%E6%81%AF%E8%81%9A%E5%90%88%E5%A7%AC-07-30"><b>机器人使用手册</b></a>
-
 可通过<strong>下方按钮</strong>切换查看不同类型的指令'''
 
 
