@@ -67,7 +67,7 @@ async def tell_stopped(offset: int, num: int, full_res: bool = False, keys: list
     return res_data
 
 
-async def add_uri(uri: str | list, waiting=False) -> list:
+async def add_uri(uri: str | list, full_res=False, waiting=False) -> list:
     '''Aria2 addUri method
 
     Params:
@@ -86,6 +86,6 @@ async def add_uri(uri: str | list, waiting=False) -> list:
     # start to iterately deal with all uri
     res_data_list = []
     for uri in uri_list:
-        res_data = await aria_request('addUri')
+        res_data = await aria_request('addUri', [[uri]], full_res=full_res)
         res_data_list.append(res_data)
     return res_data_list
