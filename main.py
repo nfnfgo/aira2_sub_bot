@@ -1,3 +1,5 @@
+# PYTelegrambotApi https://pytba.readthedocs.io/en/latest/index.html
+
 import asyncio
 import multiprocessing
 import time
